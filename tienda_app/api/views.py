@@ -1,11 +1,20 @@
 from rest_framework import status
+from rest_framework.generics import ListAPIView
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from tienda_app.infra.factories import PaymentFactory
+from tienda_app.models import Libro
 from tienda_app.services import CompraService
 
-from .serializers import OrdenInputSerializer
+from .serializers import LibroSerializer, OrdenInputSerializer
+
+
+class LibroListAPIView(ListAPIView):
+    """GET /api/v1/libros/ — catálogo con stock (mismo modelo que la vista HTML de inventario)."""
+
+    queryset = Libro.objects.select_related('inventario').order_by('id')
+    serializer_class = LibroSerializer
 
 
 class CompraAPIView(APIView):
@@ -14,6 +23,16 @@ class CompraAPIView(APIView):
     POST /api/v1/comprar/
     Payload: {"libro_id": 1, "direccion_envio": "Calle 123", "cantidad": 1}
     """
+
+    def get(self, request):
+        # GET amigable para evidencia en navegador (tutorial 04: URL pública en AWS).
+        return Response(
+            {
+                "servicio": "comprar",
+                "instrucciones": "Enviar POST con JSON: libro_id, direccion_envio; cantidad opcional (default 1).",
+            },
+            status=status.HTTP_200_OK,
+        )
 
     def post(self, request):
         serializer = OrdenInputSerializer(data=request.data)

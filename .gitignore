@@ -1,0 +1,30 @@
+# Django / Python
+*.pot
+*.pyc
+__pycache__/
+local_settings.py
+db.sqlite3
+db.sqlite3-journal
+media/
+staticfiles/
+
+# Entorno
+.env
+.venv
+venv/
+env/
+
+# IDE / OS
+.idea/
+.vscode/
+*.swp
+.DS_Store
+Thumbs.db
+
+# Docker / cobertura
+.coverage
+htmlcov/
+
+# Logs de pagos del tutorial (local)
+pagos_*.log
+pagos_locales*.log

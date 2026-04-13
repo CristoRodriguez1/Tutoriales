@@ -12,6 +12,7 @@ class MockPaymentProcessor:
 class PaymentFactory:
     @staticmethod
     def get_processor():
+        # La configuración viene del entorno, no del código (Docker / despliegue).
         provider = os.getenv('PAYMENT_PROVIDER', 'BANCO')
 
         if provider == 'MOCK':
